@@ -17,7 +17,6 @@ void main(){
     gl_FragColor = u_color;
 }`;
 
-//draw a stroke
 //para:thewidest，the narrowest. the points array
 function drawAStroke(head_width, tail_width, arr) {}
 
