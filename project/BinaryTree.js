@@ -72,7 +72,7 @@ function BinaryTree(root) {
             let stroke = stroke_array[i];
             if (stroke.toNode == pNode.fromNode) {
                 //新建节点
-                let node = new Node(stroke);
+                let node = new Node(stroke, false);
                 node.depth = pNode.depth + 1;
                 children.push(node);
             }
@@ -85,16 +85,16 @@ function BinaryTree(root) {
             pNode.left = children[0];
             children[0].parent = pNode;
             newTree(children[0]);
-        } else if (children.length == 2) //双孩子
-        {
+        } else if (children.length == 2) {
+            //双孩子
             pNode.left = children[0];
             children[0].parent = pNode;
             pNode.right = children[1];
             children[1].parent = pNode;
             newTree(children[0]);
             newTree(children[1]);
-        } else //构造虚拟孩子
-        {
+        } //构造虚拟孩子
+        else {
             let children = newVirtualNodes(pNode, children);
             for (let i = 0; i < children.length; i++) {
                 newTree(children[i]);
@@ -106,17 +106,19 @@ function BinaryTree(root) {
         //判断需要的虚节点的数量
         minVirNum = Math.floor(children.length / 2) * 2;
 
-        let nodes = []
+        let nodes = [];
+        let stroke = null;
         for (let i = 0; i < minVirNum; i++) {
-            virNode = new Node(v = true);
+            let virNode = new Node(stroke, true);
             nodes.push(virNode);
         }
         nodes.push.apply(nodes, children); //将children拼接到nodes
-        currParent = parent; //当前父亲
-        for (let i = 0; i < nodes.length; i += 2) //配对关系
-        {
+        let currParent = parent; //当前父亲
+        //配对关系
+        for (let i = 0; i < nodes.length; i += 2) {
             nodes[i].parent = currParent; //更新父亲
-            currParent.left = nodes[i]; //更新孩子
+            currParent.left = nodes[i]; //更新左孩子
+            currParent.right = nodes[i + 1]; //更新右孩子
             nodes[i].depth = currParent.depth + 1; //更新深度
 
             if (i >= nodes.length - 1) break; //指针抵达最后一个元素，防止i+1超出索引
@@ -147,9 +149,7 @@ function BinaryTree(root) {
     }
 
     //绘制一根线
-    function Draw(points, depth) {
-
-    }
+    function Draw(points, depth) {}
 
     //存在虚拟节点时，构造含有虚拟节点的树
     function constructTreeWithVirtualNode(node) {
@@ -172,20 +172,27 @@ function Forest() {
     function newForest(stroke_array) {
         // 找树根
         for (let i = 0; i < stroke_array.length; i++) {
-            let candRoot = stroke_array[i]; //候选人
-            var realRoot = true;
+            let candRoot = stroke_array[i]; //候选树根
+            let realRoot = true;
             for (let j = 0; j < stroke_array.length; j++) {
                 let stroke = stroke_array[j];
-                if (stroke.toNode == candRoot.toNode) { realRoot = false; break; }
+                if (stroke.toNode == candRoot.fromNode) {
+                    realRoot = false;
+                    break;
+                }
             }
             if (realRoot) {
                 var tree = new BinaryTree(candRoot);
+                tree.newTree(candRoot); //计算树左右孩子
                 trees.push(tree);
             }
         }
     }
 
-    function TreeCount() { return trees.length; }
+    //计算树数量
+    function TreeCount() {
+        return trees.length;
+    }
 
     function GetTree(id) {
         if (id > 0 && id < trees.length) return trees[id];
@@ -199,43 +206,5 @@ function Forest() {
             tree.DrawTree();
         }
         //刷新屏幕
-
     }
 }
-
-
-/*
-
-//建立树结构
-//参数：根节点
-function RiverTree(root) {
-    var Node = function(value) {
-        this.value = value;
-        this.left = null;
-        this.right = null;
-    };
-
-    this.root = root;
-
-
-    var insertNode = function(node， newNode) {
-
-        if (newNode == "undefined") {
-            return;
-        }
-        if (node.left == null) {
-            node.left = newNode;
-
-        } else {
-            insertNode(node.left, newNode);
-        }
-
-        if (node.right == null) {
-            node.right = newNode;
-        } else {
-            insertNode(node.left, newNode);
-        }
-        return;
-    }
-
-    */
