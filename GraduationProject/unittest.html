@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Animation</title>
 </head>
 
 <body>
@@ -16,20 +16,10 @@
     <script src="data/network_1.js"></script>
     <script>
         let pts = [
-            // new THREE.Vector3(-0.5, 0.4, 0.0),
-            // new THREE.Vector3(-0.9, 0.4, 0.0),
             new THREE.Vector3(-0.9, 0.0, 0.0),
             new THREE.Vector3(-0.5, 0.0, 0.0),
             new THREE.Vector3(0.5, 0.0, 0.0),
-            // new THREE.Vector3(0.8, -0.5, 0.0),
         ];
-
-        // const vec2_pts = [];
-        // pts.forEach( (iter) => {
-        //     vec2_pts.push(new THREE.Vector2(iter.x, iter.y))
-        // });
-        // point_left_right = insertPoints(vec2_pts, 0.1, false);
-        // console.log(point_left_right)
 
         let insertPoints_wrap = (pts, width) => {
             let vec2_pts = [];
@@ -99,44 +89,48 @@
                 "texture_coordinate": texture_coor
             };
         };
-        let result = insertPoints_wrap(pts, 0.3);
-        let coor = result["coordinate"];
-        let texture_coor = result["texture_coordinate"];
 
-        // let width = 0.05;
-        // pts = [
-        //     new THREE.Vector3(1.0, -width, 0.0),
-        //     new THREE.Vector3(1.0, width, 0.0),
-        //     new THREE.Vector3(-1.0, width, 0.0),
+        function test(){
+            let result = insertPoints_wrap(pts, 0.3);
+            let coor = result["coordinate"];
+            let texture_coor = result["texture_coordinate"];
 
-        //     new THREE.Vector3(-1.0, width, 0.0),
-        //     new THREE.Vector3(-1.0, -width, 0.0),
-        //     new THREE.Vector3(1.0, -width, 0.0),
-        // ]
-        // let texture_coordinate = [
-        //     1.0, 0.0,
-        //     1.0, 1.0,
-        //     0.0, 1.0,
+            // test:
+            let width = 0.05;
+            pts = [
+                new THREE.Vector3(1.0, -width, 0.0),
+                new THREE.Vector3(1.0, width, 0.0),
+                new THREE.Vector3(-1.0, width, 0.0),
 
-        //     0.0, 1.0,
-        //     0.0, 0.0,
-        //     1.0, 0.0,
-        // ];
+                new THREE.Vector3(-1.0, width, 0.0),
+                new THREE.Vector3(-1.0, -width, 0.0),
+                new THREE.Vector3(1.0, -width, 0.0),
+            ]
+            let texture_coordinate = [
+                1.0, 0.0,
+                1.0, 1.0,
+                0.0, 1.0,
 
-        const canvas = document.getElementById("webgl");
-        const gl = canvas.getContext('webgl');
+                0.0, 1.0,
+                0.0, 0.0,
+                1.0, 0.0,
+            ];
 
-        let lastUpdate = Date.now();
-        let total_time = 0.0;
+            const canvas = document.getElementById("webgl");
+            const gl = canvas.getContext('webgl');
+            let lastUpdate = Date.now();
+            let total_time = 0.0;
 
 
-        // setInterval(() => {
-        //     //gl_draw_with_texture(gl, pts, texture_coordinate, GL_DRAW_TYPE.TRIANGLES, "texture_white2.png", total_time);
-        //     gl_draw_with_generative_texture(gl, coor, texture_coor, GL_DRAW_TYPE.TRIANGLES, total_time);
-        //     let now = Date.now();
-        //     total_time += 0.025;
-        //     lastUpdate = now;
-        // }, 90);
+            setInterval(() => {
+                // gl_draw_with_texture(gl, pts, texture_coordinate, GL_DRAW_TYPE.TRIANGLES, "texture_white2.png", total_time);
+                gl_draw_with_generative_texture(gl, coor, texture_coor, GL_DRAW_TYPE.TRIANGLES, total_time);
+                let now = Date.now();
+                total_time += 0.025;
+                lastUpdate = now;
+            }, 90);
+        }
+
 
         /*
         image.addEventListener('load', function() {
@@ -161,15 +155,10 @@
         for(let i = 0; i < point.length - 6; i++) {
             vColor.push(new Color(0, 0, 1.0, 1));
         }
-
          */
         // drawlineSequence( gl, point, vColor, GL_DRAW_TYPE.TRIANGLES);
 
-
-
-
-
-
+        //动态河网
         function network_animation(origin_data) {
             let boundary = getMapSize(getlines(originData));
             let line_level = allLines(originData);
@@ -208,7 +197,7 @@
             let total_time = 0.0;
 
             setInterval(() => {
-                //gl_draw_with_texture(gl, pts, texture_coordinate, GL_DRAW_TYPE.TRIANGLES, "texture_white2.png", total_time);
+                // gl_draw_with_texture(gl, pts, texture_coordinate, GL_DRAW_TYPE.TRIANGLES, "texture_white2.png", total_time);
                 // gl_draw_with_generative_texture(gl, coor, texture_coor, GL_DRAW_TYPE.TRIANGLES, total_time);
                 gl_draw_with_generative_texture(gl, coor_total, texture_coor_total, GL_DRAW_TYPE.TRIANGLES, total_time);
                 let now = Date.now();
@@ -218,7 +207,7 @@
         }
 
 
-
+// test();
         network_animation(originData);
     </script>
 </body>
